@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load static %}
+{% block body %}
+
+    {% include 'dialogue.html' %}
+    {% include 'header.html' %}
+    {% include 'alerts.html' %}
+
+
+    <section class="min-h-screen p-10">
+        <p class="font-bold text-lg">All Records</p>
+        <div class="divider"></div>
+        <div class="">
+            <div class="overflow-x-auto">
+                <table class="table">
+                    <!-- head -->
+                    <thead>
+                        <tr>    
+                            <th></th>
+                            <th>Id</th>
+                            <th>Name</th>
+                            <th>Gender</th>
+                            <th>Class</th>
+                            <th>Guardian Name</th>
+                            <th>Contact no</th>
+                            <th>School Name</th>
+                            <th>Activity 1</th>
+                            <th>Activity 2</th>
+                            <th>Activity 3</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for record in records %}
+                        <tr class="cursor-pointer hover:bg-accent" onclick="ShowData('{{record.0.student_id}}')">
+                            <td>
+                                <div class="avatar">
+                                    <div class="h-12 w-12 rounded-full">
+                                        {% if record.0.image %}
+                                        <img src="{{record.0.image.url}}">
+                                        {% else %}
+                                        <img src="{% static 'media/student.svg' %}" >
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                
+                            </td>
+                            <td>{{record.0.student_id}}</td>
+                            <td>{{record.0.student_name}}</td>
+                            <td>{{record.0.student_gender}}</td>
+                            <td>{{record.0.Class}}</td>
+                            <td>{{record.0.guradian_name}}</td>
+                            <td>{{record.0.contact_number}}</td>
+                            <td>{{record.0.school_name}}</td>
+                            {% for act in record.1 %}
+                                <td>
+                                    {{act.activity}}<br>
+                                    {{act.time}}
+                                </td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                </div>
+        </div>
+    </section>
+ 
+    {% include 'footer.html' %}
+
+{% endblock %}

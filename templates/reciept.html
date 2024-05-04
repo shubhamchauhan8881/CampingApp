@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% load static %}
+{% block body %}
+
+    <header class="bg-[#e6e6e6] flex items-center p-5 shrink-0">
+        <div class="me-2">
+            <img src="{% static '/media/st.jpg' %}" class="h-28 w-28">
+        </div>
+    
+        <div class="grow ">
+            <div class="flex mb-1 justify-center items-center">
+                <h1 class="text-5xl font-extrabold">St Xaviers School</h1>
+            </div>
+            <div class="mb-5">
+                <p class="text-md font-bold text-center">SUMMER CAMP 2024</p>
+            </div>
+    
+            <div class="flex justify-between me-10 text-sm font-bold">
+                <p>Affiliated to CBSE (A school upto 10+2 level)</p>
+                <p>Sammopur, Azamgarh, UP</p>
+            </div>
+        </div>
+    </header>
+    {% include 'alerts.html' %}
+
+    <section class="min-h-screen">
+        <div class="p-5">
+            <form>
+                {% csrf_token %}
+
+                <div class="flex items-center gap-5">
+                    <div class="grow flex flex-col gap-y-5">
+                        <div class="flex flex-col row-span-2">
+                            {{ form.student_id.errors }}
+                            {{ form.student_id.label_tag }}
+                            {{ form.student_id }}
+                        </div>
+                        <div class="flex gap-x-4">
+                            <div class="grow flex flex-col row-span-2">
+                                {{ form.school_name.errors }}
+                                {{ form.school_name.label_tag }}
+                                {{ form.school_name }}
+                            </div>
+
+                        </div>
+    
+                        <div class="flex flex-col ">
+                            {{ form.name.errors }}
+                            {{ form.name.label_tag }}
+                            {{ form.name }}
+                        </div>
+                    </div>
+    
+                    <label for="id_image" class="" id="image_select">
+                        <img src="{{image}}" class="overflow-hidden object-cover h-[120px] w-[120px]">
+                    </label>
+
+                </div>
+                   
+                        
+                <div class="grid grid-cols-2 gap-3 mt-3">
+                    <div class="flex flex-col row-span-2">
+                        {{ form.gender.errors }}
+                        {{ form.gender.label_tag }}
+                        {{ form.gender }}
+                    </div> 
+
+                    <div class="flex flex-col row-span-2">
+                        {{ form.guradian_name.errors }}
+                        {{ form.guradian_name.label_tag }}
+                        {{ form.guradian_name }}
+                    </div> 
+
+                    <div class="flex flex-col row-span-2">
+                        {{ form.contact_number.errors }}
+                        {{ form.contact_number.label_tag }}
+                        {{ form.contact_number }}
+                    </div>
+
+                    <div class="flex flex-col row-span-2">
+                        {{ form.Class.errors }}
+                        {{ form.Class.label_tag }}
+                        {{ form.Class }}
+                    </div>
+
+                    <div class="flex flex-col row-span-2">
+                        {{ form.activity1.errors }}
+                        {{ form.activity1.label_tag }}
+                        {{ form.activity1 }}
+                    </div> 
+
+                    <div class="flex flex-col row-span-2">
+                        {{ form.time1.errors }}
+                        {{ form.time1.label_tag }}
+                        {{ form.time1 }}
+                    </div> 
+
+
+                    <div class="flex flex-col row-span-2">
+                        {{ form.activity2.errors }}
+                        {{ form.activity2.label_tag }}
+                        {{ form.activity2 }}
+                    </div> 
+
+                    <div class="flex flex-col row-span-2">
+                        {{ form.time2.errors }}
+                        {{ form.time2.label_tag }}
+                        {{ form.time2 }}
+                    </div> 
+
+                    <div class="flex flex-col row-span-2">
+                        {{ form.activity3.errors }}
+                        {{ form.activity3.label_tag }}
+                        {{ form.activity3 }}
+                    </div> 
+
+                    <div class="flex flex-col row-span-2">
+                        {{ form.time3.errors }}
+                        {{ form.time3.label_tag }}
+                        {{ form.time3 }}
+                    </div> 
+               
+                </div>
+                
+            </form>
+        </div>
+    
+    </section>
+
+        
+    <script type="text/javascript">print();</script> 
+
+{% endblock %}
