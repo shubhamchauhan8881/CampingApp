@@ -50,7 +50,7 @@
                             <td>{{record.0.Class}}</td>
                             <td>{{record.0.guradian_name}}</td>
                             <td>{{record.0.contact_number}}</td>
-                            <td>{{record.0.school_name}}</td>
+                            <td>{% if record..0.school_name %} {{record.0.school_name}} {% else %} {{record.0.other_school_name}} {% endif %}</td>
                             {% for act in record.1 %}
                                 <td>
                                     {{act.activity}}<br>

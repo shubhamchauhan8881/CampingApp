@@ -70,4 +70,11 @@ class RegisterForm(forms.Form):
             raise ValidationError({"time3":"%s not available for time slot %s" %(act,time)})
         return act
     
-    
+
+class UpdateForm(RegisterForm):
+    student_id = forms.CharField(label="Student id",widget=forms.TextInput(attrs={'class':'input input-bordered','readonly':True},))
+    # image = forms.FileField(required=False, widget=forms.FileInput(attrs={'class':'input input-bordered hidden'} ))
+
+class PrintForm(RegisterForm):
+    other_school_name = ""
+    school_name = forms.CharField(label="School name",widget=forms.TextInput(attrs={'class':'input input-bordered'}))

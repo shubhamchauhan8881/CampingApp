@@ -9,4 +9,5 @@ urlpatterns = [
     path('student/delete/<str:Id>/', views.Delete),
     path('student/print/<str:Id>/', views.Print),
     path('student/<str:Id>/', views.SendStData),
+    path('student/update/<str:Id>/', views.UpdateData),
 ]

@@ -92,13 +92,81 @@ def render_to_pdf(context_dict={}):
     return response
 
 
+def UpdateData(request, Id):
+    recents = models.Student.objects.all()[:10]
+    student = models.Student.objects.get(student_id=Id)
+    act = models.Participations.objects.filter(student=student)
+
+    if request.method == 'POST':
+        form = forms.UpdateForm(request.POST, request.FILES)
+        if form.is_valid():
+            student.school_name = form.cleaned_data['school_name'] if form.cleaned_data['school_name'] != "NA" else ""
+            student.other_school_name = form.cleaned_data['other_school_name'] if form.cleaned_data['other_school_name'] != "" else ""
+            
+            print(form.cleaned_data['image'])
+            if form.cleaned_data['image']:
+                student.image = form.cleaned_data['image']
+
+            student.student_name = form.cleaned_data['name']
+            student.student_gender = form.cleaned_data['gender']
+            student.Class = form.cleaned_data['Class']
+            student.guradian_name = form.cleaned_data['guradian_name']
+            student.contact_number = form.cleaned_data['contact_number']
+
+            student.save()
+
+            m = (
+                (form.cleaned_data["activity1"],form.cleaned_data["time1"] ),
+                (form.cleaned_data["activity2"],form.cleaned_data["time2"] ),
+                (form.cleaned_data["activity3"],form.cleaned_data["time3"] ),
+                )
+
+            for a in range(len(m)):
+                p = act[a]
+                p.activity = models.Activities.objects.get(id=m[a][0])
+                p.time = models.TimeSlots.objects.get(id=m[a][1])
+                p.save()
+            
+            messages.success(request,f"{student.student_name}'s details were updated successfully!.")
+            return redirect("index")
+            
+        else:
+            image_url = student.image.url if student.image else ""
+            return render(request, 'index.html', {'form': form,"student_id":Id,"edit":True, "image":image_url,'recents':recents    })
+
+    else:
+        
+        form = forms.UpdateForm(data = 
+        {   
+            "student_id":Id,
+            "name":student.student_name,
+            "school_name":student.school_name if student.school_name else "NA",
+            "other_school_name":student.other_school_name,
+            "gender":student.student_gender,
+            "Class":student.Class,
+            "contact_number":student.contact_number,
+            "guradian_name":student.guradian_name,
+            "activity1":act[0].activity.id,
+            "activity2":act[1].activity.id,
+            "activity3":act[2].activity.id,
+
+            "time1":act[0].time.id,
+            "time2":act[1].time.id,
+            "time3":act[2].time.id,
+            
+        })
+        image_url = student.image.url if student.image else ""
+        # print(image_url)
+        return render(request, 'index.html', {'form': form,"student_id":Id,"edit":True, "image":image_url,'recents':recents    })
+
+
 def Print(request, Id):
     student = models.Student.objects.get(student_id=Id, )
     act = models.Participations.objects.filter(student=student)
-    form = forms.RegisterForm(data = 
+    form = forms.PrintForm(data = 
     {
         "name":student.student_name,
-        "school_name":student.school_name,
+        "school_name":student.school_name or student.other_school_name,
         "gender":student.student_gender,
         "Class":student.Class,
         "contact_number":student.contact_number,
@@ -136,7 +204,8 @@ def Enroll(request):
         if form.is_valid():
             st = models.Student.objects.create(
                 student_id = generateStudentId(),
-                school_name = form.cleaned_data['school_name'] if form.cleaned_data['school_name'] != "NA" else form.cleaned_data['other_school_name'],
+                school_name = form.cleaned_data['school_name'] if form.cleaned_data['school_name'] != "NA" else "",
+                other_school_name = form.cleaned_data['other_school_name'] if form.cleaned_data['other_school_name'] != "" else "",
                 image = form.cleaned_data['image'],
                 student_name =form.cleaned_data['name'],
                 student_gender = form.cleaned_data['gender'],

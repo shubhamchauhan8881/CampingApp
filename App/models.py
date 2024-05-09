@@ -37,7 +37,8 @@ class TimeSlots(models.Model):
 
 class Student(models.Model):
     student_id = models.CharField(max_length=100)
-    school_name = models.CharField(max_length=200)
+    school_name = models.CharField(max_length=200, null=True, blank=True)
+    other_school_name = models.CharField(max_length=200, null=True, blank=True)
     image = models.ImageField(upload_to="uploads/student/")
     student_name = models.CharField(max_length=100)
     student_gender = models.CharField(max_length=20,choices=GENDER)

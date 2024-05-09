@@ -33,6 +33,8 @@ const ShowData = (id)=>{
                 
                 $("#table_delete").attr('href',`/student/delete/${st.id}/`);
                 $("#table_print").attr('href',`/student/print/${st.id}/`);
+                $("#table_update").attr('href',`/student/update/${st.id}/`);
+                
             }
             else{
                 alert("Failed to load student data!");
@@ -52,21 +54,29 @@ function debounce(func, timeout = 750){
   }
 
 $(document).ready(function() {
-    
+
+
+    if( $("#id_school_name").val() == "NA"){
+        console.log($("#id_school_name").val());
+        $("#other_school_name_container").removeClass("hidden");
+    }
+
     $("#id_image").on("change", function(e){
         // console.log(e.target.result);
         $("#gender_icon_male").addClass("hidden");
         $("#gender_icon_female").addClass("hidden");
         $("#aaa").attr("src", URL.createObjectURL(e.target.files[0])).removeClass("hidden");
-    });
+    }); 
+
+
 
     var selected_activity ={
-        act1:0,
-        act2:0,
-        act3:0,
-        time1:0,
-        time2:0,
-        time3:0,
+        act1:  $("#id_activity1").val() ? $("#id_activity1").val() : 0,
+        act2: $("#id_activity2").val() ? $("#id_activity2").val() : 0,
+        act3: $("#id_activity3").val() ? $("#id_activity3").val() : 0,
+        time1: $("#id_time1").val() ? $("#id_time1").val() : 0,
+        time2: $("#id_time2").val() ? $("#id_time2").val() : 0,
+        time3: $("#id_time3").val() ? $("#id_time3").val() : 0,
     };
 
     $("#id_activity1").on("change", debounce(function(e){
