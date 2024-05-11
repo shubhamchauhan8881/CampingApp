@@ -180,11 +180,9 @@ def Print(request, Id):
         "time3":act[2].time.id,
         
     })
-    # actt = models.Participations.objects.filter(student=student)
-    # pdf = render_to_pdf({'st':student, 'act':actt})
-    # return pdf
-
-    return render(request, 'reciept.html', {'form': form,  "image":student.image.url,})
+  
+    image_url = student.image.url if student.image else ""
+    return render(request, 'reciept.html', {'form': form,  "image":image_url,})
 
 def generateStudentId():
     while True:
@@ -236,6 +234,6 @@ def Enroll(request):
             messages.success(request, f"{st.student_name} was added successfully!")
             return redirect("index")
         else:
-            print("error", form.errors)
-            return render(request, 'index.html', {'form': form}) 
+            recents = models.Student.objects.all()[:10]
+            return render(request, 'index.html', {'form': form,'recents': recents}) 
   

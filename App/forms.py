@@ -3,10 +3,10 @@ from . import models
 from django.core.exceptions import ValidationError
 
 
-SCHOOL = [
-    ("Sammopur","Sammopur"),
-    ("NA","Other"),
-]
+# SCHOOL = [
+#     ("Sammopur","Sammopur"),
+#     ("NA","Other"),
+# ]
 
 def getID():
     d = f"STXS{models.IdMonitor.objects.all()[0].current}"
@@ -16,7 +16,7 @@ class RegisterForm(forms.Form):
 
     a = [("NA","Select"), *((act.id, act.name) for act in models.Activities.objects.all())]
     t = [("NA","Select"), *((time.id, time) for time in models.TimeSlots.objects.all())]
-
+    SCHOOL = [*((name, name) for name in models.Branch.objects.all()), ("NA","Other")]
 
     student_id = forms.CharField(label="Student id",initial=getID, disabled=True,widget=forms.TextInput(attrs={'class':'input input-bordered'}))
     school_name = forms.CharField(label="School name",widget=forms.Select(attrs={'class':'input input-bordered'}, choices=SCHOOL))
@@ -57,6 +57,17 @@ class RegisterForm(forms.Form):
         time1 = cleaned_data["time1"]
         time2 = cleaned_data["time2"]
         time3 = cleaned_data["time3"]
+
+        field = ""
+        if act1 == "NA":field = "activity1"
+        if act2 == "NA":field = "activity2"
+        if act3 == "NA":field = "activity3"
+        if time1 == "NA":field = "time1"
+        if time2 == "NA":field = "time2"
+        if time3 == "NA":field = "time3"
+
+        if field != "":
+            raise ValidationError({field:"select this field."})            
 
         for act,time in zip((act1,act2,act3), (time1,time2,time3)):
             self.verify_activity(act,time)

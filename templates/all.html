@@ -7,8 +7,11 @@
     {% include 'alerts.html' %}
 
 
-    <section class="min-h-screen p-10">
-        <p class="font-bold text-lg">All Records</p>
+    <section class="min-h-screen px-10"> 
+        <div class="mt-2">
+            <a href="/">Go to home</a>
+        </div>
+        <p class="font-bold text-lg mt-2">All Records</p>
         <div class="divider"></div>
         <div class="">
             <div class="overflow-x-auto">
@@ -16,7 +19,7 @@
                     <!-- head -->
                     <thead>
                         <tr>    
-                            <th></th>
+                            <th>Image</th>
                             <th>Id</th>
                             <th>Name</th>
                             <th>Gender</th>
@@ -50,11 +53,13 @@
                             <td>{{record.0.Class}}</td>
                             <td>{{record.0.guradian_name}}</td>
                             <td>{{record.0.contact_number}}</td>
-                            <td>{% if record..0.school_name %} {{record.0.school_name}} {% else %} {{record.0.other_school_name}} {% endif %}</td>
+                            <td>{% if record.0.school_name %} {{record.0.school_name}} {% else %} {{record.0.other_school_name}} {% endif %}</td>
                             {% for act in record.1 %}
-                                <td>
+                                <td class=leading-3>
                                     {{act.activity}}<br>
-                                    {{act.time}}
+                                    <span class="text-xs">
+                                        {{act.time}}
+                                    </span>
                                 </td>
                             {% endfor %}
                         </tr>

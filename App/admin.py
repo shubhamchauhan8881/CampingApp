@@ -10,18 +10,29 @@ from django.http import HttpResponse
 #     pass
 @admin.action(description="Export")
 def export(modeladmin, request, queryset):
-    headers = ["Student Name", "Gender","Class", "Guardian", "Contact", "Activity 1", "Activity 2", "Activity 3"]
+    headers = ["Id", "Student Name", "Gender","Class", "Guardian", "Contact","School Name","Activity 1","Time 1", "Activity 2","Time 2", "Activity 3","Time 3"]
     with open(f"{settings.BASE_DIR}/static/temp.csv", "w", newline="") as csvfile:
         writer = csv.writer(csvfile, )
         writer.writerow(headers)
         for st in queryset:
+            a = models.Participations.objects.filter(student=st)
             temp = [
+                st.student_id,
                 st.student_name, 
                 st.student_gender,
                 st.Class,
                 st.guradian_name,
                 st.contact_number,
-                *[f"{activity.activity.name}({activity.time})" for activity in models.Participations.objects.filter(student=st)]
+                st.school_name if st.school_name else st.other_school_name,
+                a[0].activity.name,
+                a[0].time,
+
+                a[1].activity.name,
+                a[1].time,
+
+                a[2].activity.name,
+                a[2].time,
+                   
             ]
             writer.writerow(temp)
     response = HttpResponse(open(f"{settings.BASE_DIR}/static/temp.csv", "r",).read(), content_type='text/csv')
@@ -70,6 +81,7 @@ class ParticipationAdmin(admin.ModelAdmin):
     actions = (exportp, )
 
 admin.site.register(models.Activities)
+admin.site.register(models.Branch)
 admin.site.register(models.IdMonitor)
 admin.site.register(models.TimeSlots)
 admin.site.register(models.Student, StudentAdmin)
